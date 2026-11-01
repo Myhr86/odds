@@ -1,0 +1,27 @@
+{
+  "name": "odds-intelligence",
+  "version": "1.0.0",
+  "description": "Odds Intelligence – Norsk Tipping value finder (analytical decision-support, no automated betting)",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "probe:odds-api-io": "tsx scripts/probe-odds-api-io.ts",
+    "demo:value": "tsx scripts/demo-value-finder.ts"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.14",
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

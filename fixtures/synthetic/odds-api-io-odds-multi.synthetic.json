@@ -1,0 +1,31 @@
+[
+  {
+    "_comment": "SYNTHETIC FIXTURE. Hand-written from the response shape shown in odds-api.io public docs (bookmakers keyed by name; markets with name/updatedAt/odds; hdp line field). NOT a recorded API response, prices are invented. Replace with fixtures/recorded/* from `npm run probe:odds-api-io`.",
+    "id": 900001,
+    "home": "Synthetic Home FC",
+    "away": "Synthetic Away FC",
+    "date": "2026-11-02T18:00:00Z",
+    "status": "pending",
+    "sport": { "name": "Football", "slug": "football" },
+    "league": { "name": "Synthetic League", "slug": "synthetic-league" },
+    "bookmakers": {
+      "Norsk Tipping": [
+        { "name": "ML", "updatedAt": "2026-11-01T11:59:50Z", "odds": [{ "home": "2.30", "draw": "3.30", "away": "3.00" }] },
+        { "name": "Totals", "updatedAt": "2026-11-01T11:59:50Z", "odds": [{ "hdp": 2.5, "over": "2.05", "under": "1.70" }] }
+      ],
+      "Pinnacle": [
+        { "name": "ML", "updatedAt": "2026-11-01T11:59:40Z", "odds": [{ "home": "2.12", "draw": "3.55", "away": "3.60" }] },
+        { "name": "Totals", "updatedAt": 1793534380000, "odds": [{ "hdp": 2.5, "over": "1.96", "under": "1.92" }, { "hdp": 2.25, "over": "1.80", "under": "2.08" }] }
+      ],
+      "Bet365": [
+        { "name": "ML", "updatedAt": "2026-11-01T11:59:30Z", "odds": [{ "home": 2.10, "draw": 3.50, "away": 3.50 }] },
+        { "name": "Totals", "updatedAt": "2026-11-01T11:59:30Z", "odds": [{ "hdp": 2.5, "over": 1.93, "under": 1.88 }] },
+        { "name": "Corners Totals", "updatedAt": "2026-11-01T11:59:30Z", "odds": [{ "hdp": 9.5, "over": 1.9, "under": 1.9 }] }
+      ],
+      "Unibet": [
+        { "name": "ML", "updatedAt": "2026-11-01T11:59:20Z", "odds": [{ "home": "2.08", "draw": "3.45", "away": "3.55" }] },
+        { "name": "Totals", "updatedAt": "2026-11-01T11:59:20Z", "odds": [{ "hdp": 2.5, "over": "1.92", "under": "1.88" }, { "hdp": 2.5, "over": "", "under": "1.88" }] }
+      ]
+    }
+  }
+]
