@@ -20,8 +20,18 @@ describe("The Odds API parser", () => {
     const keys = r.quotes.filter((q) => q.bookmaker === "Pinnacle").map((q) => marketKey(q.market)).sort();
     expect(keys).toEqual(["football|ASIAN_HANDICAP|FT_REGULAR|-0.25|-", "football|MATCH_RESULT|FT_REGULAR|-|-", "football|TOTAL_GOALS|FT_REGULAR|2.5|-"]);
   });
-  it("reports unmapped markets (h2h_lay)", () => {
-    expect(r.unmapped.map((u) => u.providerMarketName)).toEqual(["h2h_lay"]);
+  it("silently ignores exchange lay markets (not back-able)", () => {
+    expect(r.unmapped).toEqual([]);
+    expect(r.quotes.some((q) => q.providerMarketName === "h2h_lay")).toBe(false);
+  });
+  it("collapses regional copies of one bookmaker to a single name", async () => {
+    const { bookmakerName } = await import("@/lib/providers/the-odds-api/parse");
+    expect(bookmakerName("unibet_fr", "Unibet (FR)")).toBe("Unibet");
+    expect(bookmakerName("unibet_se", "Unibet (SE)")).toBe("Unibet");
+    expect(bookmakerName("winamax_de", "Winamax (DE)")).toBe("Winamax");
+    expect(bookmakerName("leovegas_se", "LeoVegas (SE)")).toBe("LeoVegas");
+    expect(bookmakerName("pmu_fr", "PMU (FR)")).toBe("PMU");
+    expect(bookmakerName("mybookieag", "MyBookie.ag")).toBe("MyBookie.ag");
   });
   it("keeps the last-change timestamp as providerUpdatedAt", () => {
     expect(r.quotes.find((q) => q.bookmaker === "William Hill")!.providerUpdatedAt).toBe("2026-11-01T11:00:00.000Z");
@@ -104,5 +114,21 @@ describe("TheOddsApiProvider (mocked HTTP)", () => {
     ) as unknown as typeof fetch;
     const p = new TheOddsApiProvider({ apiKey: "K", fetchImpl });
     expect((await p.getFootballLeagues()).map((s) => s.key)).toEqual(["soccer_epl"]);
+  });
+});
+
+describe("recorded The Odds API responses (fixtures/recorded/the-odds-api-*.json, gitignored)", async () => {
+  const { readdirSync } = await import("node:fs");
+  const dir = new URL("../fixtures/recorded/", import.meta.url);
+  const files = readdirSync(dir).filter((f) => f.startsWith("the-odds-api-") && f.endsWith(".json"));
+  it.skipIf(files.length === 0)("every recorded response parses with ≥3 distinct reference books per 1X2 market", () => {
+    for (const f of files) {
+      for (const ev of JSON.parse(readFileSync(new URL(f, dir), "utf8"))) {
+        const res = parseOddsEvent(ev, NOW.toISOString());
+        const mr = new Set(res.quotes.filter((q) => q.market.type === "MATCH_RESULT").map((q) => q.bookmaker));
+        expect(mr.size).toBeGreaterThanOrEqual(3);
+        expect(res.unmapped.filter((u) => u.reason !== "no mapping rule")).toEqual([]);
+      }
+    }
   });
 });

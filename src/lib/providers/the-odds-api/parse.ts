@@ -41,6 +41,11 @@ export const BOOKMAKER_NAMES: Record<string, string> = {
   betfair_ex_uk: "Betfair Exchange",
   betfair_ex_au: "Betfair Exchange",
   matchbook: "Matchbook",
+  unibet: "Unibet",
+  winamax: "Winamax",
+  betclic: "Betclic",
+  leovegas: "LeoVegas",
+  codere: "Codere",
   williamhill: "William Hill",
   unibet_eu: "Unibet",
   unibet_uk: "Unibet",
@@ -50,12 +55,21 @@ export const BOOKMAKER_NAMES: Record<string, string> = {
   betsson: "Betsson",
   coolbet: "Coolbet",
   sport888: "888sport",
-  betclic: "Betclic",
 };
 
+/**
+ * Regional copies of one bookmaker (unibet_fr / unibet_nl / unibet_se, winamax_fr / winamax_de …) price
+ * from the same trading desk. Counting them separately would inflate the number of "independent"
+ * references, so they collapse to one name and the consensus keeps only the first copy.
+ * (Verified on a real response 2026-11-01: Unibet FR/NL/SE and Winamax FR/DE all present.)
+ */
+const REGION_SUFFIX = /_(fr|nl|se|de|it|eu|uk|au|us|us2|es|dk|ie|be|ca|pt)$/;
 export function bookmakerName(key: string, title: string): string {
-  return BOOKMAKER_NAMES[key] ?? title;
+  return BOOKMAKER_NAMES[key] ?? BOOKMAKER_NAMES[key.replace(REGION_SUFFIX, "")] ?? title.replace(/\s*\([A-Z]{2,3}\)$/, "");
 }
+
+/** Markets that are expected and deliberately not used (exchange lay prices are not back-able odds). */
+const IGNORED_MARKETS = new Set(["h2h_lay"]);
 
 export function parseEvent(raw: unknown): ProviderEvent {
   const e = TheOddsApiEvent.parse(raw);
@@ -122,6 +136,7 @@ export function parseOddsEvent(raw: unknown, fetchedAt: string): OddsResult {
         quotes.push(quote(event, name, m.key, { sport: "football", type: "ASIAN_HANDICAP", period: "FT_REGULAR", line: home.point }, { home: home.price, away: away.price }, m.last_update ?? b.last_update, fetchedAt));
         continue;
       }
+      if (IGNORED_MARKETS.has(m.key)) continue;
       const rule = RULES[m.key];
       if (!rule) {
         unmapped.push({ bookmaker: name, providerMarketName: m.key, reason: "no mapping rule" });

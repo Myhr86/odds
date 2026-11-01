@@ -32,6 +32,8 @@ After the network policy was opened (2026-11-01), these **keyless** endpoints we
 
 Still open: Q3–Q7 need an API key.
 
+**The Odds API (option A reference source), checked live 2026-11-01 [LIVE]:** `/v4/sports` returns 78 sports, 47 active football leagues incl. `soccer_norway_eliteserien`, at a cost of 0 credits. `/v4/sports/soccer_epl/odds?regions=eu&markets=h2h,totals` cost 2 credits (headers `x-requests-remaining/used/last`). It returned 13 events with 9–24 bookmakers each, including `pinnacle`, `betfair_ex_eu` and `matchbook`, and regional copies such as `unibet_fr/nl/se`. h2h is 3-way with "Draw". Totals carry `point`. An extra `h2h_lay` market (exchange lay prices) is present and ignored.
+
 ## 1. Norsk Tipping: is there an official API?
 
 - **No public developer API for Oddsen was found.** [3P] A third-party scraper listing (parse.bot) says outright that Norsk Tipping "does not publish a documented public developer API" for Oddsen. A Norwegian open-source project discussion (GitHub `runevangen/sb#194`, Sept 2026) reached the same conclusion.

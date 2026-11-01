@@ -27,7 +27,7 @@ Odds-API.io (the only automated Norsk Tipping source) costs at least $65/month, 
 - [x] Settings: thresholds; per-market settlement verification (caps at WATCHLIST until ticked)
 - [x] Local PGlite DB (zero setup) or Postgres/Supabase via DATABASE_URL
 - [x] Browser test of the full flow (Playwright, demo mode)
-- [ ] Run with a real THE_ODDS_API_KEY and record a real response as a fixture
+- [x] Run with a real THE_ODDS_API_KEY (2026-11-01): 47 active football leagues; EPL call returned 13 events, up to 24 bookmakers (Pinnacle, Betfair Exchange, Matchbook included), 2 credits per call, as documented. Response shape matched the parser. Regional duplicates (Unibet FR/NL/SE, Winamax FR/DE) are now collapsed. The recorded response is kept locally only (gitignored, licensed data)
 - [ ] Verify The Odds API soccer h2h/totals settlement (90 min) → tick in Settings
 - [ ] Optional "capture closing line" button (2 credits) to enable CLV in manual mode
 - [ ] Supabase Auth when more than one user needs access

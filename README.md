@@ -47,5 +47,8 @@ npm run typecheck
 - [Research](docs/01-research.md) · [Architecture](docs/02-architecture.md) · [Roadmap](docs/03-roadmap.md)
 - Screenshots (demo data): [value finder](docs/screenshots/value-finder-demo.png), [dashboard](docs/screenshots/dashboard-demo.png), [history](docs/screenshots/history-demo.png), [mobile](docs/screenshots/mobile-value-finder.png)
 
+## Behind a network proxy
+Node's built-in `fetch` ignores `HTTPS_PROXY`. On a proxied machine (e.g. a cloud dev container), start with `NODE_USE_ENV_PROXY=1 npm run dev`. Normal home or office networks don't need this.
+
 ## Hosting note
 PGlite needs a persistent disk, so it works locally or on a VM, but not on Vercel serverless. To deploy on Vercel, set `DATABASE_URL` to a Supabase Postgres connection string. The migrations apply automatically on first start.

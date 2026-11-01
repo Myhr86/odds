@@ -50,7 +50,8 @@ export const DEFAULT_CONSENSUS_CONFIG: ConsensusConfig = {
     "Betfair Exchange": 3,
     Sbobet: 2.5,
     SingBet: 2.5,
-    Pinnacle: 3, // kept for a possible second provider
+    Pinnacle: 3, // available via The Odds API (eu region)
+    Matchbook: 2.5,
     Bet365: 1,
     Unibet: 1,
     "William Hill": 1,
