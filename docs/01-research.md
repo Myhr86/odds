@@ -1,6 +1,6 @@
 # Phase 1: Data source research and validation
 
-**Date:** 2026-11-01. **Status:** desk research done. **Live verification is still open** (see §0).
+**Date:** 2026-11-01. **Status:** desk research done. Live verification has started (§0.1). Calls that need a key are still open.
 
 > **Evidence levels used in this document**
 > - **[DOC]**: stated in the provider's own documentation, seen through search-engine extracts of their pages.
@@ -12,10 +12,25 @@
 
 ## 0. Verification constraint (read first)
 
-The build environment's network policy blocked outbound HTTPS to every data provider: `odds-api.io`, `api.odds-api.io`, `docs.odds-api.io`, `v3.football.api-sports.io`, `api.the-odds-api.com` and `football-data.co.uk`. Only the npm registry was reachable. So:
+The build environment's network policy blocked outbound HTTPS to every data provider: `odds-api.io`, `api.odds-api.io`, `docs.odds-api.io`, `v3.football.api-sports.io`, `api.the-odds-api.com` and `football-data.co.uk`. Only the npm registry was reachable at first. So:
 
 - the research below comes from web-search extracts of provider pages, not from direct page loads or API calls;
 - a ready-to-run **verification probe** (`npm run probe:odds-api-io`) records real responses and answers the open questions Q1–Q7. Run it on a machine with network access and an API key. **Phase 2 must not start until it has passed.**
+
+### 0.1 Live verification log
+
+After the network policy was opened (2026-11-01), these **keyless** endpoints were called for real. They are marked **[LIVE]**:
+
+| Check | Result |
+|---|---|
+| `GET /v3/bookmakers` | 488 bookmakers. Objects have `name`, `active`, `createdAt`, `status`, `reason` |
+| **Q1: Norsk Tipping** | ✅ **`"Norsk Tipping"`**, `active: true`, `status: "ok"` |
+| **Q2: reference books** | ✅ `Betfair Exchange`, `Sbobet`, `SingBet` (plus `SingBet A–D`), `Bet365`, `Unibet`, `William Hill`, `Marathonbet`, `1xbet`, `Bwin`, `Betsson`, `NordicBet`, `Coolbet`, `Interwetten`, `Polymarket`. ❌ **Pinnacle is not offered by Odds-API.io** |
+| `GET /v3/sports` | Football slug `football` |
+
+**Consequence:** the sharp anchors are **Betfair Exchange (weight 3), Sbobet (2.5) and SingBet (2.5)**, and the defaults have been updated. Pinnacle remains a candidate through a second, reference-only provider (The Odds API, EU region) if the consensus turns out weak.
+
+Still open: Q3–Q7 need an API key.
 
 ## 1. Norsk Tipping: is there an official API?
 
@@ -29,7 +44,7 @@ The build environment's network policy blocked outbound HTTPS to every data prov
 
 | Item | Finding | Evidence |
 |---|---|---|
-| Norsk Tipping listed | Appears in the A–Z directory of 450+ bookmakers | [DOC] |
+| Norsk Tipping listed | Exact name `Norsk Tipping`, active | **[LIVE]** |
 | Dedicated Norsk Tipping page (markets, pre-match or live) | **Not retrievable.** No per-market coverage confirmed | [UNVERIFIED] |
 | Base URL / auth | `https://api.odds-api.io/v3`, `apiKey` query parameter | [DOC] |
 | Endpoints | `/bookmakers`, `/sports` (usable without a key), `/events` (`sport`, `league`, `status`, `bookmaker`, `limit`), `/odds?eventId=&bookmakers=`, `/odds/multi?eventIds=` (≤10 events, billed as one request), `/historical/events`, `/historical/odds`, `/historical/closing-lines` (paid) | [DOC] |
@@ -46,7 +61,7 @@ The build environment's network policy blocked outbound HTTPS to every data prov
 | Prices | Conflicting: "from £49/mo", "from $65/mo", and Starter £99 / Growth £179 / Pro £229 | [DOC/3P]. **Check the live pricing page** |
 | Free tier | **New free keys paused since 27 Aug 2026.** Existing ones: 100 req/h, 2 bookmakers | [DOC] |
 
-**Key design implication:** the bookmaker cap **counts Norsk Tipping itself**. The brief requires at least 3 independent reference books, so we need at least 4 slots, which means **Starter (5) or more**. A solid consensus with a sharp anchor needs **Growth (10)**: Norsk Tipping + Pinnacle + Betfair Exchange + 4–7 others.
+**Key design implication:** the bookmaker cap **counts Norsk Tipping itself**. The brief requires at least 3 independent reference books, so we need at least 4 slots, which means **Starter (5) or more**. A solid consensus with sharp anchors needs **Growth (10)**: Norsk Tipping + Betfair Exchange + Sbobet + SingBet + Bet365 + Unibet + 3–4 others. Pinnacle is not available here [LIVE].
 
 ### 2.2 Alternatives considered
 

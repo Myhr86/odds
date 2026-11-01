@@ -33,7 +33,7 @@ if (!key) {
   console.error("ODDS_API_IO_KEY is not set. Copy .env.example to .env and run with the key in the environment.");
   process.exit(2);
 }
-const wantedRefs = (process.env.ODDS_API_IO_REFERENCE_BOOKMAKERS ?? "Pinnacle,Betfair Exchange,Bet365,Unibet").split(",").map((s) => s.trim()).filter(Boolean);
+const wantedRefs = (process.env.ODDS_API_IO_REFERENCE_BOOKMAKERS ?? "Betfair Exchange,Sbobet,SingBet,Bet365,Unibet").split(",").map((s) => s.trim()).filter(Boolean);
 const outDir = new URL("../fixtures/recorded/", import.meta.url);
 mkdirSync(outDir, { recursive: true });
 const stamp = new Date().toISOString().replace(/[:.]/g, "-");

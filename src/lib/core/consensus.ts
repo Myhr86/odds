@@ -45,11 +45,12 @@ export const DEFAULT_CONSENSUS_CONFIG: ConsensusConfig = {
   targetBookmaker: "Norsk Tipping",
   maxAgeSeconds: 120,
   marginMethod: "proportional",
+  // Names as returned by odds-api.io GET /v3/bookmakers (verified 2026-11-01). Pinnacle is NOT offered there.
   reliabilityWeights: {
-    Pinnacle: 3,
-    "Betfair Exchange": 2.5,
-    SBOBet: 2,
-    Singbet: 2,
+    "Betfair Exchange": 3,
+    Sbobet: 2.5,
+    SingBet: 2.5,
+    Pinnacle: 3, // kept for a possible second provider
     Bet365: 1,
     Unibet: 1,
     "William Hill": 1,
@@ -136,9 +137,10 @@ export function buildConsensus(
     return { outcomes: [...outcomes], probabilities: null, used: [], rejected, nBooks: 0, effectiveBooks: 0, dispersion: outcomes.map(() => 0), maxAgeSeconds: null };
   }
 
+  const weightsLc = Object.fromEntries(Object.entries(config.reliabilityWeights).map(([k, v]) => [k.toLowerCase(), v]));
   const used = cands.map((c) => ({
     bookmaker: c.bookmaker,
-    weight: (config.reliabilityWeights[c.bookmaker] ?? config.defaultWeight) * Math.pow(0.5, c.ageSeconds / config.freshnessHalfLifeSeconds),
+    weight: (weightsLc[c.bookmaker.toLowerCase()] ?? config.defaultWeight) * Math.pow(0.5, c.ageSeconds / config.freshnessHalfLifeSeconds),
     fairProbabilities: c.fair,
     overround: c.overround,
     ageSeconds: c.ageSeconds,

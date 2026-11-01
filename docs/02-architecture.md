@@ -75,7 +75,7 @@ All of this is implemented in `src/lib/core` and covered by tests (`tests/*.test
 | Overround | `Σq − 1` |
 | Margin removal (default) | Proportional: `p_i = q_i / Σq`. Power and Shin are available for research (they correct the favourite–longshot bias). The method is a config value and is stored with each recommendation |
 | Reference filtering | Drop: the target book (Norsk Tipping), stale quotes (`age > maxAge`, default 120 s), incomplete or invalid price sets, overround > 15%, duplicates. With ≥4 books, also drop outliers: `|p − median| > max(4 pp, 4·MAD)` (catches line or market mismatches) |
-| Weights | `w = reliability × 0.5^(age / 300 s)`. Reliability defaults: Pinnacle 3, Betfair Exchange 2.5, SBOBet/Singbet 2, others 1 (starting values) |
+| Weights | `w = reliability × 0.5^(age / 300 s)`. Reliability defaults: Betfair Exchange 3, Sbobet 2.5, SingBet 2.5, others 1 (starting values). Pinnacle isn't offered by Odds-API.io. Name matching is case-insensitive |
 | Consensus | Linear opinion pool `p_j = Σ w_i p_ij / Σ w_i`, renormalised. Reported with n, Kish effective n `(Σw)²/Σw²`, weighted SD per outcome |
 | Fair odds | `1 / p` |
 | EV | `EV = odds_NT × p − 1` (spec example: 2.20 × 0.49 − 1 = **+7.8%**, which is a unit test) |
@@ -90,7 +90,7 @@ All of this is implemented in `src/lib/core` and covered by tests (`tests/*.test
 | coverage | 0.30 | `min(1, effectiveBooks / 6)` |
 | freshness | 0.20 | `1 − worstAge / 120 s` |
 | agreement | 0.25 | `1 − SD_selection / 3 pp` |
-| sharpAnchor | 0.15 | 1 if Pinnacle/Betfair Exchange/… contributed, else 0.4 |
+| sharpAnchor | 0.15 | 1 if Betfair Exchange/Sbobet/SingBet contributed, else 0.4 |
 | marketClean | 0.10 | 1 clean · 0.6 push/quarter line · 0.5 unverified settlement |
 | modelCalibration (Phase 4) | 0.15 | `1 − ECE / 0.10` |
 | trackRecord (Phase 5) | 0.10 | `min(1, n/500) × clamp(0.5 + 10·meanCLV)` |

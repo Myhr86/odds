@@ -47,6 +47,13 @@ describe("buildConsensus", () => {
     expect(Math.abs(w.probabilities![0]! - 0.5)).toBeLessThan(Math.abs(eq.probabilities![0]! - 0.5));
     expect(w.effectiveBooks).toBeLessThan(2);
   });
+  it("reliability weight lookup is case-insensitive", () => {
+    const r = buildConsensus(OU, [
+      { bookmaker: "SBOBET", odds: [1.95, 1.95], ageSeconds: 0 },
+      { bookmaker: "Soft", odds: [1.7, 2.1], ageSeconds: 0 },
+    ], cfg({ reliabilityWeights: { Sbobet: 2.5 } }));
+    expect(r.used[0]!.weight).toBeCloseTo(2.5, 12);
+  });
   it("older quotes get exponentially less weight (half-life)", () => {
     const r = buildConsensus(OU, [
       { bookmaker: "A", odds: [1.9, 1.9], ageSeconds: 0 },
@@ -111,7 +118,7 @@ describe("market keys", () => {
 
 const ou25: CanonicalMarket = { sport: "football", type: "TOTAL_GOALS", period: "FT_REGULAR", line: 2.5 };
 const refs = (extra: ReferenceMarketQuote[] = []): ReferenceMarketQuote[] => [
-  { bookmaker: "Pinnacle", prices: { over: 1.95, under: 1.95 }, ageSeconds: 10 },
+  { bookmaker: "Sbobet", prices: { over: 1.95, under: 1.95 }, ageSeconds: 10 },
   { bookmaker: "Betfair Exchange", prices: { over: 1.98, under: 1.98 }, ageSeconds: 10 },
   { bookmaker: "Bet365", prices: { over: 1.91, under: 1.91 }, ageSeconds: 10 },
   { bookmaker: "Unibet", prices: { over: 1.9, under: 1.92 }, ageSeconds: 10 },
@@ -158,7 +165,7 @@ describe("evaluateMarket", () => {
 
 describe("evaluateDoubleChance", () => {
   it("derives fair DC from 1X2 consensus instead of de-vigging overlapping prices", () => {
-    const mr: ReferenceMarketQuote[] = ["Pinnacle", "Bet365", "Unibet"].map((b) => ({ bookmaker: b, prices: { home: 2.0, draw: 3.5, away: 4.0 }, ageSeconds: 5 }));
+    const mr: ReferenceMarketQuote[] = ["Sbobet", "Bet365", "Unibet"].map((b) => ({ bookmaker: b, prices: { home: 2.0, draw: 3.5, away: 4.0 }, ageSeconds: 5 }));
     const res = evaluateDoubleChance("FT_REGULAR", { bookmaker: "Norsk Tipping", prices: { home_draw: 1.4, home_away: 1.3, draw_away: 2.0 }, ageSeconds: 5 }, mr, { settlementVerified: true });
     const hd = res.find((r) => r.outcome === "home_draw")!;
     expect(hd.fairProbability!).toBeCloseTo(0.4827586207 + 0.2758620690, 9);

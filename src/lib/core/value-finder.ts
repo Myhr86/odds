@@ -67,7 +67,7 @@ export interface SelectionEvaluation {
   consensus: Pick<ConsensusResult, "nBooks" | "effectiveBooks" | "maxAgeSeconds" | "rejected"> & { usedBooks: string[] };
 }
 
-const DEFAULT_SHARP = ["Pinnacle", "Betfair Exchange", "SBOBet", "Singbet"];
+const DEFAULT_SHARP = ["Betfair Exchange", "Sbobet", "SingBet", "Pinnacle"];
 
 /**
  * Evaluate every selection of one market for one event.
