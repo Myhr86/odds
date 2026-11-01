@@ -12,7 +12,27 @@
 - [ ] **GATE: manual settlement check (Q8)** for each market to be enabled. Set `verified: true` in `mapping.ts` only for those that pass
 - [ ] Buy the plan (expected: Odds-API.io Growth) after the probe confirms Norsk Tipping coverage
 
-## Phase 2: Functional MVP (starts after the gate)
+## Decision (2026-11-01): option A, free data
+
+Odds-API.io (the only automated Norsk Tipping source) costs at least $65/month, so the MVP uses **manual Norsk Tipping entry plus The Odds API free plan** for reference odds. The provider architecture is unchanged, so switching to odds-api.io later is a configuration and adapter change.
+
+## Phase 2A: MVP with manual Norsk Tipping entry (done)
+
+- [x] The Odds API adapter (references), synthetic-fixture tests, credit tracking
+- [x] Manual Norsk Tipping entry with typo detection (an implied total under 100% is rejected)
+- [x] Value Finder: league → match → Norsk Tipping prices → EV / fair odds / confidence / category with "Why?"
+- [x] Double chance calculated from the 1X2 consensus
+- [x] Every evaluation recorded (immutable); odds history stored only on change
+- [x] Watchlist; settlement from the 90-minute score; ROI / hit rate with CIs by category, EV range and confidence
+- [x] Settings: thresholds; per-market settlement verification (caps at WATCHLIST until ticked)
+- [x] Local PGlite DB (zero setup) or Postgres/Supabase via DATABASE_URL
+- [x] Browser test of the full flow (Playwright, demo mode)
+- [ ] Run with a real THE_ODDS_API_KEY and record a real response as a fixture
+- [ ] Verify The Odds API soccer h2h/totals settlement (90 min) → tick in Settings
+- [ ] Optional "capture closing line" button (2 credits) to enable CLV in manual mode
+- [ ] Supabase Auth when more than one user needs access
+
+## Phase 2: Functional MVP with an automated Norsk Tipping feed (only if a paid feed is bought)
 
 1. Next.js app shell (dark theme, navigation for all 8 sections, Supabase Auth)
 2. Ingest worker: event discovery and tiered odds polling, then `upsert_odds`, plus `sync_runs` health

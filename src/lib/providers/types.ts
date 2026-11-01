@@ -6,7 +6,7 @@ import type { CanonicalMarket } from "../markets/types";
  * Adapters run SERVER-SIDE only – they read API keys from the environment.
  */
 
-export type DataOrigin = "LIVE_PROVIDER" | "DEMO";
+export type DataOrigin = "LIVE_PROVIDER" | "MANUAL" | "DEMO";
 
 export interface ProviderEvent {
   provider: string;

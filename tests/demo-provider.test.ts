@@ -19,7 +19,7 @@ describe("DemoOddsProvider", () => {
     const events = await p.getEvents();
     const res = await p.getOdds(events.map((e) => e.providerEventId), [p.targetBookmaker, ...p.referenceBookmakers]);
     const evals = evaluateQuotes(res.flatMap((r) => r.quotes), p.targetBookmaker, now);
-    expect(evals.length).toBe(12);
+    expect(evals.length).toBe(30); // 6 events × (2 totals + 3 1X2)
     expect(evals.every((e) => e.origin === "DEMO")).toBe(true);
   });
 });

@@ -40,25 +40,24 @@ export class DemoOddsProvider implements OddsProvider {
     return ids.map((id) => {
       const event = events.find((e) => e.providerEventId === id) ?? null;
       const pOver = 0.35 + this.rand() * 0.3;
-      const quotes: OddsQuote[] = bookmakers.map((bk) => {
+      const pHome = 0.25 + this.rand() * 0.4;
+      const pDraw = 0.22 + this.rand() * 0.08;
+      const quotes: OddsQuote[] = [];
+      for (const bk of bookmakers) {
         const isTarget = bk === this.targetBookmaker;
         const margin = isTarget ? 0.06 + this.rand() * 0.04 : 0.02 + this.rand() * 0.04;
-        const noise = (this.rand() - 0.5) * (isTarget ? 0.08 : 0.02);
-        const p = Math.min(0.9, Math.max(0.1, pOver + noise));
+        const noise = () => (this.rand() - 0.5) * (isTarget ? 0.08 : 0.02);
         const k = 1 + margin;
-        return {
-          provider: this.name,
-          providerEventId: id,
-          bookmaker: bk,
-          providerMarketName: "DEMO Totals 2.5",
-          market: { sport: "football", type: "TOTAL_GOALS", period: "FT_REGULAR", line: 2.5 },
-          prices: { over: round2(1 / (p * k)), under: round2(1 / ((1 - p) * k)) },
-          providerUpdatedAt: new Date(this.now().getTime() - Math.floor(this.rand() * 60_000)).toISOString(),
-          fetchedAt,
-          settlementVerified: true,
-          origin: "DEMO",
-        };
-      });
+        const updated = new Date(this.now().getTime() - Math.floor(this.rand() * 60_000)).toISOString();
+        const base = { provider: this.name, providerEventId: id, bookmaker: bk, providerUpdatedAt: updated, fetchedAt, settlementVerified: true, origin: "DEMO" as const };
+        const p = Math.min(0.9, Math.max(0.1, pOver + noise()));
+        quotes.push({ ...base, providerMarketName: "DEMO Totals 2.5", market: { sport: "football", type: "TOTAL_GOALS", period: "FT_REGULAR", line: 2.5 }, prices: { over: round2(1 / (p * k)), under: round2(1 / ((1 - p) * k)) } });
+        const h = Math.max(0.05, pHome + noise());
+        const d = Math.max(0.05, pDraw + noise() / 2);
+        const a = Math.max(0.05, 1 - h - d);
+        const s = h + d + a;
+        quotes.push({ ...base, providerMarketName: "DEMO 1X2", market: { sport: "football", type: "MATCH_RESULT", period: "FT_REGULAR" }, prices: { home: round2(s / (h * k)), draw: round2(s / (d * k)), away: round2(s / (a * k)) } });
+      }
       return { event, quotes, unmapped: [] };
     });
   }

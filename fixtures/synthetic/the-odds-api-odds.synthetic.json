@@ -1,0 +1,30 @@
+[
+  {
+    "_comment": "SYNTHETIC FIXTURE: hand-written in the documented The Odds API v4 shape. Prices and teams are invented. NOT a recorded response.",
+    "id": "synth0001",
+    "sport_key": "soccer_norway_eliteserien",
+    "sport_title": "Eliteserien - Norway",
+    "commence_time": "2026-11-02T18:00:00Z",
+    "home_team": "Synthetic Home FC",
+    "away_team": "Synthetic Away FC",
+    "bookmakers": [
+      { "key": "pinnacle", "title": "Pinnacle", "last_update": "2026-11-01T11:40:00Z", "markets": [
+        { "key": "h2h", "last_update": "2026-11-01T11:40:00Z", "outcomes": [ { "name": "Synthetic Home FC", "price": 2.12 }, { "name": "Synthetic Away FC", "price": 3.6 }, { "name": "Draw", "price": 3.55 } ] },
+        { "key": "totals", "last_update": "2026-11-01T11:40:00Z", "outcomes": [ { "name": "Over", "price": 1.96, "point": 2.5 }, { "name": "Under", "price": 1.92, "point": 2.5 } ] },
+        { "key": "spreads", "outcomes": [ { "name": "Synthetic Home FC", "price": 1.95, "point": -0.25 }, { "name": "Synthetic Away FC", "price": 1.93, "point": 0.25 } ] }
+      ] },
+      { "key": "betfair_ex_eu", "title": "Betfair", "last_update": "2026-11-01T11:59:00Z", "markets": [
+        { "key": "h2h", "outcomes": [ { "name": "Synthetic Home FC", "price": 2.14 }, { "name": "Synthetic Away FC", "price": 3.65 }, { "name": "Draw", "price": 3.6 } ] },
+        { "key": "h2h_lay", "outcomes": [ { "name": "Synthetic Home FC", "price": 2.16 }, { "name": "Synthetic Away FC", "price": 3.7 }, { "name": "Draw", "price": 3.65 } ] }
+      ] },
+      { "key": "unibet_eu", "title": "Unibet", "last_update": "2026-11-01T11:30:00Z", "markets": [
+        { "key": "h2h", "outcomes": [ { "name": "Synthetic Home FC", "price": 2.08 }, { "name": "Synthetic Away FC", "price": 3.5 }, { "name": "Draw", "price": 3.45 } ] },
+        { "key": "totals", "outcomes": [ { "name": "Over", "price": 1.92, "point": 2.5 }, { "name": "Under", "price": 1.88, "point": 2.5 } ] }
+      ] },
+      { "key": "williamhill", "title": "William Hill", "last_update": "2026-11-01T11:00:00Z", "markets": [
+        { "key": "h2h", "outcomes": [ { "name": "Synthetic Home FC", "price": 2.1 }, { "name": "Synthetic Away FC", "price": 3.4 }, { "name": "Draw", "price": 3.4 } ] },
+        { "key": "totals", "outcomes": [ { "name": "Over", "price": 1.9, "point": 2.5 }, { "name": "Under", "price": 1.9, "point": 2.5 } ] }
+      ] }
+    ]
+  }
+]

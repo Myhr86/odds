@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Odds Intelligence – Norsk Tipping value finder (analytical decision-support, no automated betting)",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "probe:odds-api-io": "tsx scripts/probe-odds-api-io.ts",
@@ -11,12 +14,23 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.14",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22.20.5",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^3.2.7"
   },
   "dependencies": {
+    "next": "^16.4.3",
+    "pg": "^8.23.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1",
     "zod": "^3.25.76"
   },
   "private": true,

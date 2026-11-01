@@ -6,3 +6,5 @@ fixtures/recorded/*.json
 !fixtures/recorded/.gitkeep
 coverage/
 .next/
+data/
+next-env.d.ts
