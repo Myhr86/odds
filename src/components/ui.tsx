@@ -46,6 +46,9 @@ export function DemoBanner() {
   return (
     <div className="rounded-lg border border-warn/50 bg-warn/10 px-4 py-2 text-sm text-warn">
       <strong>DEMO DATA.</strong> THE_ODDS_API_KEY is not configured, so reference odds are synthetic and teams are fictional. Nothing shown says anything about real markets.
+      <span className="mt-1 block text-xs text-warn/80">
+        To use real data, add <code>THE_ODDS_API_KEY=your_key</code> to a file named <code>.env.local</code> in the project folder (next to package.json), then restart <code>npm run dev</code>. On Vercel, add it under Project → Settings → Environment Variables and redeploy.
+      </span>
     </div>
   );
 }
